@@ -11,6 +11,7 @@ namespace SeleniumQueuedSessions
     [Parallelizable(ParallelScope.All)]
     public class Tests
     {
+        private const string GRID_URL = "http://localhost:4444/wd/hub/";
         private IWebDriver Driver
         {
             get => (IWebDriver) TestExecutionContext.CurrentContext.CurrentTest.Properties.Get("driver");
@@ -29,14 +30,14 @@ namespace SeleniumQueuedSessions
         {
             ChromeOptions options = new ChromeOptions {Proxy = null};
             options.AddArgument("--start-maximized");
-            Driver =  new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub/"),options.ToCapabilities(),  TimeSpan.FromMinutes(5));
+            Driver =  new RemoteWebDriver(new Uri(GRID_URL),options.ToCapabilities(),  TimeSpan.FromMinutes(5));
         }
 
         [TestCase(1)]
         [TestCase(2)]
         public void SessionQueueTest(int dummyInt)
         {
-            Thread.Sleep(new Random().Next(5000,10000)); // to keep node occupied and let the other test wait a bit in a queue
+            Thread.Sleep(1000);
             Assert.Pass();
         }
         
